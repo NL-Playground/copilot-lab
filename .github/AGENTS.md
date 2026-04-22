@@ -7,6 +7,8 @@
 實驗和學習如何建立 GitHub Copilot 的客製化功能，包括：
 - **Prompts** (`.github/prompts/`) - 單一任務的可重複使用模板
 - **Skills** (`.github/skills/`) - 多步驟工作流程，可包含腳本和資源
+- **Instructions** (`.github/instructions/`) - 檔案特定指令，按需載入
+- **Global Instructions** (`.github/copilot-instructions.md`) - 全局 Copilot 行為設定
 
 ## 專案結構
 
@@ -16,11 +18,14 @@
 │   ├── validate-prompt.json  # 驗證問題相關性
 │   └── scripts/
 │       └── validate-development-prompt.js
+├── instructions/      # 檔案特定指令 (*.instructions.md)
+│   └── python-naming.instructions.md  # Python 函式命名規範（駝峰式）
 ├── prompts/           # Prompt 檔案 (*.prompt.md 或 *.md)
 │   └── get-branch.md  # 取得目前 Git branch
-└── skills/            # Skills 資料夾
-    └── commit-messages/ # Git commit message 產生器
-        └── SKILL.md
+├── skills/            # Skills 資料夾
+│   └── commit-messages/ # Git commit message 產生器
+│       └── SKILL.md
+└── copilot-instructions.md  # 全局指令（繁體中文設定）
 ```
 
 ## 開發規範
@@ -55,10 +60,34 @@
 - 需要包含 scripts/、references/、assets/
 - 可重複使用的複雜流程
 
+### Instructions (檔案特定指令)
+
+**Instructions** 是針對特定檔案類型或任務的程式碼規範和指引，會在相關時自動載入。
+
+**目前可用的 Instructions：**
+
+- **Python Naming** ([python-naming.instructions.md](.github/instructions/python-naming.instructions.md))
+  - 強制 Python 函式使用駝峰式命名（camelCase）
+  - 自動套用到所有 `.py` 檔案
+  - 提供正確和錯誤範例
+  - 包含例外情況說明
+
+**使用 Instructions 的時機：**
+- 語言特定的編碼規範
+- 框架或函式庫的使用慣例
+- 檔案類型的格式要求
+- 專案特定的命名或結構規則
+
+**觸發模式：**
+- **`applyTo` 模式**：編輯匹配的檔案時自動載入
+- **`description` 模式**：任務相關時按需載入
+- **手動模式**：透過 "Add Context" 選擇
+
 ### 檔案命名規範
 
 - **Prompts**: `<name>.md` 或 `<name>.prompt.md`
 - **Skills**: `<skill-name>/SKILL.md` (資料夾名稱必須與 frontmatter 中的 name 一致)
+- **Instructions**: `<name>.instructions.md`
 
 ### Frontmatter 必要欄位
 
@@ -76,6 +105,14 @@ description: "清楚描述用途和觸發時機"
 name: skill-name  # 必須與資料夾名稱一致
 description: "包含關鍵字以便 agent 發現和載入"
 argument-hint: "選用：slash 命令提示"
+---
+```
+
+**Instructions:**
+```yaml
+---
+description: "必填：包含觸發關鍵字"
+applyTo: "**/*.py"  # 選用：自動套用到匹配的檔案
 ---
 ```
 
@@ -134,11 +171,25 @@ touch .github/skills/<skill-name>/SKILL.md
 - `references/` - 參考文件
 - `assets/` - 模板、樣板檔案
 
+### 建立 Instruction
+
+```bash
+# 建立 instruction 檔案
+touch .github/instructions/<name>.instructions.md
+```
+
+Instruction 結構：
+- 必須包含 `description` (用於按需發現)
+- 選用 `applyTo` glob 模式（自動套用到匹配檔案）
+- 定義編碼規範、命名慣例或框架規則
+- 提供範例和例外情況說明
+
 ## 參考資源
 
 - [VS Code Copilot Customization](https://code.visualstudio.com/docs/copilot/customization)
 - [Prompt Files](https://code.visualstudio.com/docs/copilot/customization/prompt-files)
 - [Agent Skills](https://code.visualstudio.com/docs/copilot/customization/agent-skills)
+- [Custom Instructions](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
 
 ## 測試客製化
 
