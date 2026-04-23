@@ -52,14 +52,15 @@ process.stdin.on('end', () => {
     const isSlashCommand = userPrompt.trim().startsWith('/');
 
     if (!isRelevant && !isSlashCommand) {
-      // 不相關的問題：詢問用戶確認
+      // 不相關的問題：阻止執行並回應
       const output = {
         hookSpecificOutput: {
           hookEventName: "UserPromptSubmit",
-          validationResult: "warning"
+          validationResult: "blocked"
         },
-        systemMessage: "⚠️ 此問題似乎與程式開發或專案無關。是否確定要繼續？\\n\\n此專案專注於 GitHub Copilot 客製化開發。建議提出與程式碼、Git、專案結構或開發工具相關的問題。",
-        continue: true  // 仍然繼續，但顯示警告
+        systemMessage: "我不能處理。抱歉。\\n\\n此專案專注於 GitHub Copilot 客製化開發。請提出與程式碼、Git、專案結構或開發工具相關的問題。",
+        assistantMessage: "我不能處理。抱歉。",
+        continue: false  // 阻止繼續執行
       };
       
       console.log(JSON.stringify(output));
