@@ -1,6 +1,6 @@
 # 後端 User Stories
 
-**專案**: Copilot Lab - 企業級登入系統  
+**專案**: Copilot Lab - 登入系統  
 **版本**: 1.0.0  
 **撰寫日期**: 2026-05-14  
 **撰寫者**: Product Manager  

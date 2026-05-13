@@ -558,7 +558,7 @@ EXEC sp_GetDatabaseStatistics;
 
 **最後更新**: 2026-05-13  
 **維護者**: System Analyst Team  
-**專案**: Copilot Lab - 企業級登入系統
+**專案**: Copilot Lab - 登入系統
 ```
 
 ### 3. 查詢使用者登入狀態

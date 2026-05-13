@@ -3,7 +3,7 @@
   "info": {
     "title": "Copilot Lab - 登入系統 API",
     "version": "1.0.0",
-    "description": "企業級登入系統的 RESTful API 規格文件",
+    "description": "RESTful API 規格文件",
     "contact": {
       "name": "API Support",
       "email": "support@copilot-lab.dev"

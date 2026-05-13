@@ -3,7 +3,7 @@
 **文件版本**: 1.0.0  
 **最後更新**: 2026-05-13  
 **撰寫者**: System Analyst Team  
-**專案**: Copilot Lab - 企業級登入系統
+**專案**: Copilot Lab - 登入系統
 
 ---
 
@@ -229,7 +229,7 @@ Keys:
 
 | 技術 | 版本 | 選擇理由 | 替代方案 |
 |------|------|---------|---------|
-| **SQL Server** | 2019+ | 企業級、ACID 保證 | PostgreSQL, MySQL |
+| **SQL Server** | 2019+ | 、ACID 保證 | PostgreSQL, MySQL |
 | **Redis** | 7+ | 高效能快取、Session 儲存 | Memcached |
 
 ### 3.4 部署技術棧
