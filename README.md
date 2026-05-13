@@ -1,8 +1,8 @@
-# 🎉 Copilot Lab - 企業級登入系統示範專案
+# Copilot Lab - 企業級登入系統示範專案
 
 一個使用 Vue.js 3 和 Node.js 建立的企業級登入系統，展示現代化全端開發架構與最佳實踐。
 
-## 🎯 專案目的
+## 專案目的
 
 ### 專案背景
 本專案是一個**技術學習與實踐平台**，旨在提供完整的企業級登入系統實作範例。透過整合現代化前後端技術、進階架構模式與容器化部署，協助開發者理解並掌握生產環境等級的系統設計與實作方法。
@@ -46,68 +46,23 @@
 - 實踐 DevOps 與自動化部署流程
 
 ### 適用對象
-- 🎓 **初學者**：學習全端開發的完整實踐
-- 💼 **中階開發者**：掌握企業級系統的設計與實作
-- 🏢 **技術團隊**：作為專案架構與規範的參考模板
-- 🚀 **技術領導者**：了解現代化技術棧的整合與最佳實踐
+- **初學者**：學習全端開發的完整實踐
+- **中階開發者**：掌握企業級系統的設計與實作
+- **技術團隊**：作為專案架構與規範的參考模板
+- **技術領導者**：了解現代化技術棧的整合與最佳實踐
 
-## ✨ 功能特色
-
-- 🎨 現代化的 UI 設計
-- 🔐 帳號密碼登入功能
-- 🚀 使用 Vite 快速開發
-- 💫 流暢的動畫效果
-- 📱 響應式設計
-
-## 🛠️ 技術棧
+## 技術棧
 
 ### 前端
 - Vue.js 3 (Composition API)
 - Vite
-- CSS3 動畫
 
 ### 後端
 - Node.js
 - Express.js
 - CORS
 
-## 📦 安裝步驟
-
-### 1. 安裝依賴套件
-
-```bash
-npm install
-```
-
-### 2. 啟動應用
-
-#### 方式一：同時啟動前後端（推薦）
-
-```bash
-npm start
-```
-
-這個指令會同時啟動：
-- 前端開發伺服器（Vue + Vite）: http://localhost:3000
-- 後端 API 伺服器（Express）: http://localhost:3001
-
-#### 方式二：分別啟動
-
-**啟動後端伺服器：**
-```bash
-npm run server
-```
-
-**啟動前端開發伺服器（另開終端機）：**
-```bash
-npm run dev
-```
-
-### 3. 開啟瀏覽器
-
-訪問 [http://localhost:3000](http://localhost:3000)
-
-## � 使用 Docker 運行
+## 使用 Docker 運行
 
 ### 前置需求
 - 安裝 Docker 和 Docker Compose
@@ -132,8 +87,8 @@ docker-compose down
 ```
 
 服務會在以下埠號運行：
-- 🎨 **前端**: http://localhost:3000 (Nginx)
-- 🔧 **後端**: http://localhost:3001 (Node.js)
+- **前端**: http://localhost:3000 (Nginx)
+- **後端**: http://localhost:3001 (Node.js)
 
 #### 開發環境
 
@@ -145,30 +100,7 @@ docker-compose -f docker-compose.dev.yml up
 docker-compose -f docker-compose.dev.yml down
 ```
 
-### 方式二：使用 Docker 指令腳本
-
-我們提供了便利的 shell 腳本來管理 Docker：
-
-```bash
-# 給予執行權限（首次使用）
-chmod +x docker.sh
-
-# 生產環境
-./docker.sh build      # 建置映像
-./docker.sh up         # 啟動服務
-./docker.sh down       # 停止服務
-./docker.sh logs       # 查看日誌
-
-# 開發環境
-./docker.sh dev        # 啟動開發環境
-./docker.sh dev-down   # 停止開發環境
-
-# 維護
-./docker.sh clean      # 清理 Docker 資源
-./docker.sh ps         # 查看容器狀態
-```
-
-### 方式三：建置單一映像
+### 方式二：建置單一映像
 
 #### 後端映像
 ```bash
@@ -201,24 +133,6 @@ docker run -d -p 3000:80 --name frontend copilot-lab-frontend
 | `nginx.conf` | Nginx 配置檔 |
 | `docker.sh` | Docker 管理腳本 |
 
-### Docker 映像特色
-
-- ✅ 多階段建置，最小化映像大小
-- ✅ Alpine Linux 基底映像
-- ✅ 健康檢查機制
-- ✅ 生產環境優化
-- ✅ Nginx 反向代理
-- ✅ API 請求自動轉發
-- ✅ 開發環境支援熱重載
-
-## �🔑 測試帳號
-
-| 帳號 | 密碼 |
-|------|------|
-| admin | password123 |
-| user | 123456 |
-| test | test123 |
-
 ## 📁 專案結構
 
 ```
@@ -236,86 +150,4 @@ login-app/
 └── README.md                  # 說明文件
 ```
 
-## 🎯 API 端點
-
-### POST /api/login
-登入驗證
-
-**請求範例：**
-```json
-{
-  "username": "admin",
-  "password": "password123"
-}
-```
-
-**成功回應：**
-```json
-{
-  "success": true,
-  "message": "登入成功",
-  "user": {
-    "username": "admin"
-  }
-}
-```
-
-**失敗回應：**
-```json
-{
-  "success": false,
-  "message": "帳號或密碼錯誤"
-}
-```
-
-### GET /api/health
-健康檢查
-
-**回應：**
-```json
-{
-  "status": "ok",
-  "message": "Server is running",
-  "timestamp": "2026-05-13T00:00:00.000Z"
-}
-```
-
-## 🚀 建置專案
-
-```bash
-npm run build
-```
-
-建置後的檔案會在 `dist/` 目錄中。
-
-## 🔄 預覽建置版本
-
-```bash
-npm run preview
-```
-
-## 📝 開發筆記
-
-### 前端功能
-- ✅ Vue 3 Composition API
-- ✅ 響應式登入表單
-- ✅ 錯誤訊息顯示
-- ✅ 載入狀態處理
-- ✅ 登入後的歡迎畫面
-- ✅ 登出功能
-
-### 後端功能
-- ✅ Express API 伺服器
-- ✅ CORS 支援
-- ✅ 登入驗證邏輯
-- ✅ 請求記錄
-
-## ⚠️ 注意事項
-
-**這是一個示範專案，不適合直接用於正式環境：**
-
-1. 密碼以明文儲存（應使用 bcrypt 等加密）
-2. 沒有使用資料庫（應使用 MySQL、MongoDB 等）
-3. 沒有 JWT token 驗證機制
-4. 沒有 session 管理
-5. 沒有防護 CSRF、XSS 等安全措施
+**這是一個示範專案，不適合直接用於正式環境**
