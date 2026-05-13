@@ -48,4 +48,5 @@ docker-compose*.yml
 
 # 文件
 documents/
+.github/
 *.md
