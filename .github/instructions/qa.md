@@ -446,11 +446,6 @@ Network: POST /api/login 401
 - **API**: Supertest
 - **效能**: k6, Artillery
 
-### Bug 追蹤
-- GitHub Issues
-- Jira
-- Trello
-
 ## 與團隊協作
 
 ### 與 PM

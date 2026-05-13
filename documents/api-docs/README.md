@@ -7,15 +7,16 @@
 - 主要格式：`*.json` (Swagger API Doc)
 - 輔助說明：`*.md` (Markdown 說明文件)
 
+## 📂 現有文件
+
+- **[swagger.json](swagger.json)** - 完整 API 規格文件（OpenAPI 3.0）
+
 ## 檔案組織建議
 
 ```
 api-docs/
 ├── README.md              # 本檔案
 ├── swagger.json           # 完整 API 規格
-├── auth-api.json          # 認證相關 API
-├── user-api.json          # 使用者管理 API
-└── changelog.md           # API 變更記錄
 ```
 
 ## 參考時機

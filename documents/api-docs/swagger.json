@@ -1,0 +1,591 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Copilot Lab - 登入系統 API",
+    "version": "1.0.0",
+    "description": "企業級登入系統的 RESTful API 規格文件",
+    "contact": {
+      "name": "API Support",
+      "email": "support@copilot-lab.dev"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001",
+      "description": "開發環境"
+    },
+    {
+      "url": "http://localhost:3001",
+      "description": "本地環境"
+    },
+    {
+      "url": "https://api.copilot-lab.dev",
+      "description": "生產環境（規劃中）"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "認證相關 API"
+    },
+    {
+      "name": "Health",
+      "description": "系統健康檢查"
+    },
+    {
+      "name": "User",
+      "description": "使用者管理（規劃中）"
+    }
+  ],
+  "paths": {
+    "/api/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "使用者登入",
+        "description": "驗證使用者帳號密碼，成功後返回使用者資訊",
+        "operationId": "login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              },
+              "examples": {
+                "admin": {
+                  "summary": "管理員帳號",
+                  "value": {
+                    "username": "admin",
+                    "password": "password123"
+                  }
+                },
+                "user": {
+                  "summary": "一般使用者",
+                  "value": {
+                    "username": "user",
+                    "password": "123456"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "登入成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginSuccessResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "登入成功",
+                  "user": {
+                    "username": "admin"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "請求參數錯誤",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "請輸入帳號和密碼"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "認證失敗",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "帳號或密碼錯誤"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "請求過於頻繁（規劃中）",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "登入嘗試次數過多，請稍後再試"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "伺服器內部錯誤",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "伺服器發生錯誤，請稍後再試"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "tags": ["Health"],
+        "summary": "健康檢查",
+        "description": "檢查 API 伺服器是否正常運行",
+        "operationId": "healthCheck",
+        "responses": {
+          "200": {
+            "description": "伺服器運行正常",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                },
+                "example": {
+                  "status": "ok",
+                  "message": "Server is running",
+                  "timestamp": "2026-05-13T10:30:00.000Z"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服務不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                },
+                "example": {
+                  "status": "error",
+                  "message": "Service unavailable",
+                  "timestamp": "2026-05-13T10:30:00.000Z"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "使用者登出（規劃中）",
+        "description": "登出當前使用者，清除會話資訊",
+        "operationId": "logout",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "登出成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                },
+                "example": {
+                  "success": true,
+                  "message": "登出成功"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未認證",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/me": {
+      "get": {
+        "tags": ["User"],
+        "summary": "取得當前使用者資訊（規劃中）",
+        "description": "取得當前已認證使用者的詳細資訊",
+        "operationId": "getCurrentUser",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功取得使用者資訊",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDetailResponse"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "userId": "550e8400-e29b-41d4-a716-446655440000",
+                    "username": "admin",
+                    "email": "admin@example.com",
+                    "isActive": true,
+                    "createdAt": "2026-01-01T00:00:00.000Z",
+                    "lastLoginAt": "2026-05-13T10:30:00.000Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未認證",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{userId}": {
+      "get": {
+        "tags": ["User"],
+        "summary": "取得指定使用者資訊（規劃中）",
+        "description": "根據使用者 ID 取得使用者詳細資訊",
+        "operationId": "getUserById",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "使用者 UUID",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功取得使用者資訊",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDetailResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未認證",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "使用者不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "success": false,
+                  "message": "使用者不存在"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LoginRequest": {
+        "type": "object",
+        "required": ["username", "password"],
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "使用者帳號",
+            "minLength": 3,
+            "maxLength": 50,
+            "example": "admin"
+          },
+          "password": {
+            "type": "string",
+            "description": "使用者密碼",
+            "format": "password",
+            "minLength": 6,
+            "maxLength": 128,
+            "example": "password123"
+          }
+        }
+      },
+      "LoginSuccessResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "操作是否成功",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "回應訊息",
+            "example": "登入成功"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserInfo"
+          },
+          "token": {
+            "type": "string",
+            "description": "JWT 存取權杖（規劃中）",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "JWT 刷新權杖（規劃中）",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          }
+        }
+      },
+      "UserInfo": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "使用者帳號",
+            "example": "admin"
+          },
+          "userId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "使用者 UUID（規劃中）",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "使用者 Email（規劃中）",
+            "example": "admin@example.com"
+          }
+        }
+      },
+      "UserDetailResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/UserDetail"
+          }
+        }
+      },
+      "UserDetail": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "使用者 UUID",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "username": {
+            "type": "string",
+            "description": "使用者帳號",
+            "example": "admin"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "使用者 Email",
+            "example": "admin@example.com"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "帳號是否啟用",
+            "example": true
+          },
+          "isLocked": {
+            "type": "boolean",
+            "description": "帳號是否鎖定",
+            "example": false
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "建立時間",
+            "example": "2026-01-01T00:00:00.000Z"
+          },
+          "lastLoginAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "最後登入時間",
+            "example": "2026-05-13T10:30:00.000Z"
+          }
+        }
+      },
+      "HealthResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "伺服器狀態",
+            "enum": ["ok", "error"],
+            "example": "ok"
+          },
+          "message": {
+            "type": "string",
+            "description": "狀態描述",
+            "example": "Server is running"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "檢查時間（ISO 8601 格式）",
+            "example": "2026-05-13T10:30:00.000Z"
+          },
+          "uptime": {
+            "type": "integer",
+            "description": "運行時間（秒）（規劃中）",
+            "example": 3600
+          },
+          "database": {
+            "type": "object",
+            "description": "資料庫狀態（規劃中）",
+            "properties": {
+              "status": {
+                "type": "string",
+                "example": "connected"
+              },
+              "latency": {
+                "type": "string",
+                "example": "15ms"
+              }
+            }
+          }
+        },
+        "required": ["status", "message", "timestamp"]
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "操作是否成功",
+            "example": false
+          },
+          "message": {
+            "type": "string",
+            "description": "錯誤訊息",
+            "example": "帳號或密碼錯誤"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "錯誤代碼（規劃中）",
+            "example": "INVALID_CREDENTIALS"
+          },
+          "details": {
+            "type": "object",
+            "description": "錯誤詳細資訊（規劃中）",
+            "properties": {
+              "field": {
+                "type": "string",
+                "example": "password"
+              },
+              "reason": {
+                "type": "string",
+                "example": "Invalid password"
+              }
+            }
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "錯誤發生時間（規劃中）",
+            "example": "2026-05-13T10:30:00.000Z"
+          }
+        },
+        "required": ["success", "message"]
+      },
+      "SuccessResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "操作是否成功",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "description": "成功訊息",
+            "example": "操作成功"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "操作時間（規劃中）",
+            "example": "2026-05-13T10:30:00.000Z"
+          }
+        },
+        "required": ["success", "message"]
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT 認證權杖（規劃中）\n\n範例：`Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`"
+      }
+    }
+  },
+  "security": [],
+  "externalDocs": {
+    "description": "完整專案文件",
+    "url": "https://github.com/your-org/copilot-lab"
+  }
+}

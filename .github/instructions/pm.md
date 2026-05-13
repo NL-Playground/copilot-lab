@@ -22,6 +22,7 @@ description: "Project Manager role - Use when: acting as PM, requirement analysi
 
 **輸出文件**：
 - `documents/sd-docs/requirements.md` - 功能需求規格
+- - `documents/test-case/*-user-story.md` - User Stories 文件
 - User Stories 格式：
   ```markdown
   ## US-001: 使用者登入

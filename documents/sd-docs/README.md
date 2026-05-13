@@ -10,11 +10,23 @@
 ## 檔案格式
 主要使用 **Markdown** (`.md`) 格式
 
+## 📂 現有文件
+
+### 核心架構文件（SA 輸出）
+- **[architecture.md](architecture.md)** - 系統架構設計文件
+- **[technical-spec.md](technical-spec.md)** - 技術規格文件
+- **[design-decisions.md](design-decisions.md)** - 架構設計決策記錄 (ADR)
+
+### 詳細規格文件
+- **[backend-specification.md](backend-specification.md)** - 後端系統完整規格文件（綜合版）
+
 ## 檔案組織建議
 
 ```
 sd-docs/
 ├── README.md                    # 本檔案
+├── backend-specification.md     # 後端系統規格（已完成）
+├── frontend-specification.md    # 前端系統規格（待補充）
 ├── architecture.md              # 系統架構總覽
 ├── requirements.md              # 功能需求規格
 ├── technical-spec.md            # 技術規格
@@ -156,6 +168,3 @@ const example = 'Hello World'
 ## 維護原則
 
 1. **文件驅動開發**：先寫文件，再寫程式
-2. **版本控制**：重要變更記錄版本歷史
-3. **定期審查**：每季度檢視文件正確性
-4. **團隊共識**：重大決策需團隊討論確認
