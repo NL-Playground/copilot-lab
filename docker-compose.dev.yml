@@ -1,0 +1,27 @@
+# 開發用 Docker Compose
+version: '3.8'
+
+services:
+  # 開發環境 - 整合前後端
+  dev-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: copilot-lab-dev
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+    volumes:
+      - ./src:/app/src
+      - ./index.html:/app/index.html
+      - ./server.js:/app/server.js
+      - ./vite.config.js:/app/vite.config.js
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    networks:
+      - dev-network
+
+networks:
+  dev-network:
+    driver: bridge

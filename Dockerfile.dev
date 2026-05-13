@@ -1,0 +1,17 @@
+# 開發環境 Dockerfile
+FROM node:20-alpine
+
+WORKDIR /app
+
+# 安裝依賴
+COPY package*.json ./
+RUN npm install
+
+# 複製原始碼
+COPY . .
+
+# 暴露埠號
+EXPOSE 3000 3001
+
+# 預設指令
+CMD ["npm", "run", "start"]
